@@ -6,10 +6,15 @@
 
 // Keep all extruders up to temperature etc.
 
-void manage_all_extruders()
+inline void manage_all_extruders()
 {
-    for(byte i = 0; i < EXTRUDER_COUNT; i++)
+/*    for(byte i = 0; i < EXTRUDER_COUNT; i++)
        ex[i]->manage();
+       */
+       #if EXTRUDER_COUNT == 2
+         ex[1]->manage();
+       #endif
+       ex[0]->manage();
 }
 
 // Select a new extruder
@@ -118,6 +123,8 @@ byte extruder::wait_till_hot()
             count = 0;
         }
 	delay(1000);
+        Serial.print("T:");
+        Serial.println( get_temperature() );
   }
   return 0;
 }
@@ -178,10 +185,11 @@ int extruder::get_target_temperature()
 *  Samples the temperature and converts it to degrees celsius.
 *  Returns degrees celsius.
 */
-int extruder::get_temperature()
+inline int extruder::get_temperature()
 {
 #ifdef USE_THERMISTOR
-	int raw = sample_temperature();
+        int raw = analogRead(temp_pin);
+	//int raw = sample_temperature();
 
 	int celsius = 0;
 	byte i;
@@ -239,8 +247,11 @@ int extruder::sample_temperature()
   o If temp is too low, don't start the motor
   o Adjust the heater power to keep the temperature at the target
  */
-void extruder::manage()
-{
+inline void extruder::manage()
+{  
+       if(get_temperature() < target_celsius) digitalWrite(heater_pin,HIGH);
+       else digitalWrite(heater_pin,LOW);
+/*
 	//make sure we know what our temp is.
 	int current_celsius = get_temperature();
         byte newheat = 0;
@@ -257,6 +268,7 @@ void extruder::manage()
                 heater_current = newheat;
                 analogWrite(heater_pin, heater_current);
         }
+*/
 }
 
 

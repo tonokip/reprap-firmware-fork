@@ -136,6 +136,8 @@ void setup()
   
   setTimer(DEFAULT_TICK);
   enableTimerInterrupt();
+  
+  pinMode(PS_EN_PIN,OUTPUT);
 
 }
 

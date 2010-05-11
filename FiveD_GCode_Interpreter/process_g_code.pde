@@ -330,7 +330,7 @@ bool process_string(char instruction[], int size)
 			if (gc.seen & GCODE_Z)
 				fp.z = gc.Z;
 			if (gc.seen & GCODE_E)
-				fp.e = gc.E;
+				fp.e += gc.E;
 		}
 		else
 		{
@@ -529,11 +529,16 @@ bool process_string(char instruction[], int size)
 				if (gc.seen & GCODE_S)
 					extruder_speed = gc.S;
 				break;
-
+/*
  			case 109: // Base plate heater on/off
  				if (gc.seen & GCODE_S)
  				  digitalWrite(BASE_HEATER_PIN, gc.S != 0);
  				break;
+ */
+ 			case 109:
+				ex[extruder_in_use]->set_target_temperature((int)gc.S);
+                                ex[extruder_in_use]->wait_till_hot();
+				break;
 
                         // Starting a new print, reset the gc.LastLineNrRecieved counter
 			case 110:

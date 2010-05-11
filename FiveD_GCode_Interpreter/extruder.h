@@ -20,8 +20,6 @@ void new_extruder(byte e);
 
 #if USE_EXTRUDER_CONTROLLER == false
 
-#define EXTRUDER_FORWARD false
-#define EXTRUDER_REVERSE true
 
 class extruder
 {
@@ -51,7 +49,6 @@ private:
     byte motor_dir_pin, motor_speed_pin, heater_pin, fan_pin, temp_pin, valve_dir_pin, valve_en_pin, heater_low, heater_high;
     signed int step_en_pin;
     
-     byte wait_till_hot();
      //byte wait_till_cool();
      void temperature_error(); 
      int sample_temperature();
@@ -62,6 +59,7 @@ public:
    void wait_for_temperature();
    void valve_set(bool open, int dTime);
 
+   byte wait_till_hot();
    void set_direction(bool direction);
    void set_speed(float es);
    void set_cooler(byte e_speed);

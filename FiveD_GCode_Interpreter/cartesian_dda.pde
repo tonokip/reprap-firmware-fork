@@ -188,6 +188,7 @@ void cartesian_dda::dda_step()
    
   do
   {
+                manage_all_extruders();
 		x_can_step = can_step(X_MIN_PIN, X_MAX_PIN, current_steps.x, target_steps.x, x_direction);
 		y_can_step = can_step(Y_MIN_PIN, Y_MAX_PIN, current_steps.y, target_steps.y, y_direction);
 		z_can_step = can_step(Z_MIN_PIN, Z_MAX_PIN, current_steps.z, target_steps.z, z_direction);
@@ -410,8 +411,8 @@ void cartesian_dda::disable_steppers()
 {
 #if MOTHERBOARD > 0
 	//disable our steppers
-	digitalWrite(X_ENABLE_PIN, !ENABLE_ON);
-	digitalWrite(Y_ENABLE_PIN, !ENABLE_ON);
+	//digitalWrite(X_ENABLE_PIN, !ENABLE_ON);
+	//digitalWrite(Y_ENABLE_PIN, !ENABLE_ON);
 	digitalWrite(Z_ENABLE_PIN, !ENABLE_ON);
 
         // Disabling the extrude stepper causes the backpressure to
